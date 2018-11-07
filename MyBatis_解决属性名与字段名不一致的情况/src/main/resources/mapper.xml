@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    解决属性名与字段名不一致的情况
+    假设对象的属性有一个 stuID 与 数据库中的id 是匹配的
+-->
+
+<mapper namespace="org.lint.DAO.StudentDAO">
+    <!--第一种使用别名-->
+    <!--    <select id="seleStu" resultType="org.lint.Entity.Student">
+          通过添加别名来进行匹配
+            select id stuID , name , age , sroce from student;
+        </select>-->
+
+
+    <!--   使用结果映射       -->
+    <!--<resultMap id="stuMapper" type="Student">
+        这里要有一个特殊的id键 ， 然后 column 代表的是数据库的列 ， property 代表对象的属性 ，当我们有属性和列不相同时我们可以定义在里面
+        就会通过映射的方式来进行对属性的赋值
+        <id column="id" property="stuID"/>
+        <result column="name" property="name"/>
+    </resultMap>
+    &lt;!&ndash; 这个resultMap 是结果映射 &ndash;&gt;
+    <select id="seleStu" resultMap="stuMapper">
+          select id stuID , name , age , sroce from student;
+    </select>-->
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.lint.DAO.stuDAO">
+    <select id="seleStu" resultType="org.lint.beans.Student">
+        select id,name,age,sroce from student
+        <where>
+            <if test="name != null">
+                and name = #{name}
+            </if>
+            <if test="age &lt; 0">
+                and age = #{age}
+            </if>
+        </where>
+    </select>
+    <select id="seleStuChoose" resultType="org.lint.beans.Student">
+        select id , name ,age ,sroce from student
+        <where>
+            <choose>
+                <when test="name != null">
+                    and name = #{name}
+                </when>
+                <when test="age &lt; 0">
+                    and age > #{age}
+                </when>
+                <otherwise>
+                    1 = 3
+                </otherwise>
+            </choose>
+        </where>
+    </select>
+    <select id="seleStuForeach" resultType="org.lint.beans.Student">
+      select <include refid="col"/>
+      <if test="array.length" >
+          where id in
+          <foreach collection="array" item="id" open="(" close=")" separator=",">
+              #{id}
+          </foreach>
+      </if>
+    </select>
+    <sql id="col">
+        id , name ,age ,sroce from student
+    </sql>
+</mapper>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.lint.DAO.StudentDAO">
+
+    <select id="seleStu" resultType="org.lint.Entity.Student">
+        select id , name , age , sroce from student;
+    </select>
+</mapper>

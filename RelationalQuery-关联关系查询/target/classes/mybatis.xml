@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<!--注意这个文件的节点顺序是规定的，如果哪个节点的顺序错了，会报错-->
+<!--它的节点顺序如下-->
+<!--    properties  -->
+<!--    settings    -->
+<!--    typeAliases -->
+<!--    typeHandlers    -->
+<!--    objectFactory   -->
+<!--    objectWrapperFactory   -->
+<!--    reflectorFactory    -->
+<!--    plugins -->
+<!--    environments    -->
+<!--    databaseIdProvider  -->
+<!--    mappers -->
+<configuration>
+
+    <!--设置属性-->
+    <!--可以通过外部文件设置也可以进行节点设置-->
+    <!--如果外部文件中的一些值的名与节点中的name起冲突(也就是一样时) 优先使用节点中的值-->
+    <!--外部文件设置通过两种方式进行 resource url 这两个参数进行设置-->
+    <!--我们要使用这些值时通过 ${name} 来进行使用-->
+    <properties resource="JDBCconfig.properties">
+        <property name="username" value="root"/>
+        <property name="password" value="love1314"/>
+    </properties>
+
+    <!--类型别名，也就是说我们在mapper使用 alias 的值，代表type 这个类型-->
+
+    <typeAliases>
+        <!--我们就会使用Student 就代表了org.lint.beans.Student这个类-->
+
+        <!--我们也可以使用包来使用，这样设置就统一了一个样式别名 比如：在这个包中有一个Student 类，那它的alias(别名)就是Student-->
+        <package name="org.lint.Entity"/>
+    </typeAliases>
+
+
+    <!--配置运行环境-->
+    <!--允许设置多个environment ，如果要使用哪个就在default属性上添加该ID名-->
+    <environments default="online">
+        <!--MariaDB的配置-->
+        <environment id="online">
+            <transactionManager type="JDBC"></transactionManager>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="root"/>
+                <property name="password" value="love1314"/>
+            </dataSource>
+        </environment>
+        <environment id="test">
+            <transactionManager type="JDBC"></transactionManager>
+            <dataSource type="POOLED">
+                <property name="driver" value="org.mariadb.jdbc.Driver"/>
+                <property name="url" value="jdbc:mariadb://localhost:3306:/ssm_db"/>
+                <property name="username" value="root"/>
+                <property name="password" value="love1314"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+
+    <!--注册映射文件-->
+    <mappers>
+        <!--单一映射文件适用-->
+        <mapper resource="mapper/ProvinceMapper.xml"/>
+        <mapper resource="mapper/CityMapper.xml"/>
+        <mapper resource="mapper/newMapper.xml"/>
+        <mapper resource="mapper/StuMapper.xml"/>
+        <!--放在包里，我们就可以扫描这个包，把这个配置文件都配置到这个包中的所有映射文件-->
+        <!--<package name="mapper" />-->
+    </mappers>
+
+
+</configuration>

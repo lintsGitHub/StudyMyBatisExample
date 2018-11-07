@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.lint.StuDAO">
+
+    <select id="seleAllStu" resultType="org.lint.Entity.Student">
+         select id , name,age,sroce from student
+    </select>
+    <select id="seleAllStu2" resultType="org.lint.Entity.Student">
+         select id , name,age,sroce from student
+    </select>
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache" />
+    <select id="seleAllStu3" resultType="org.lint.Entity.Student">
+         select id , name,age,sroce from student
+    </select>
+    <select id="seleAllStu4" useCache="false" resultType="org.lint.Entity.Student">
+         select id , name,age,sroce from student
+    </select>
+</mapper>

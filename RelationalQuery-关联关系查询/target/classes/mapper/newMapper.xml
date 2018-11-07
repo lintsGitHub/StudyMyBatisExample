@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.lint.DAO.NewsDAO">
+
+    <!--一对多方式进行处理-->
+    <!--业务需求查询指定栏目的所有子栏目-->
+    <!--在数据库方面是使用递归查询-->
+    <!--在代码中是这样实现的-->
+    <resultMap id="tomap" type="News">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <collection property="news" ofType="News" column="id" select="seleNews"/>
+    </resultMap>
+    <!--这个东西要理解-->
+    <!--    <select id="sele" resultMap="tomap">
+            select id,name where pid = #{aa}
+        </select>-->
+    <!--当你正常写出那个集里面的查询语句时，你会发现与第一次定义的那条查询语句相差无异-->
+    <select id="seleNews" resultMap="tomap">
+      select id , name from news where pid = #{aa}
+    </select>
+
+    <!--业务需求：查询指定栏目及其所有子孙栏目-->
+
+    <select id="sele" resultMap="news">
+        select id,name from news where pid = #{aa}
+    </select>
+
+    <resultMap id="news" type="News">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <collection property="news" ofType="News" column="id" select="sele"/>
+    </resultMap>
+
+    <select id="seleNew" resultMap="news">
+      select id , name from news where id = #{aa}
+    </select>
+
+
+    <!--多对一方式进行处理-->
+    <!--查询当前栏目及其所有父辈栏目-->
+    <resultMap id="CNew" type="CNews">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <association property="news"
+                     javaType="CNews"
+                     select="seleCNew"
+                     column="pid"
+        />
+    </resultMap>
+
+    <select id="seleCNew" resultMap="CNew">
+        select id , name ,pid from news where id = #{id}
+    </select>
+
+</mapper>

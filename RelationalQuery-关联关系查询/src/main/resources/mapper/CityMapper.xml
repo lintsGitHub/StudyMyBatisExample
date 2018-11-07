@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+        <!DOCTYPE mapper
+                PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+                "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--需求查出城市编号为1的城市的省市信息-->
+<!--其实这个与一对多的处理方式都是大同小异的-->
+
+<!--在一对多中我们是在实体类中定义一个集合来存放多方对象的数据，然后通过resultMap的方式进行一种
+映射关系，使用collection(集)的方式来进行对集合的属性赋值，然后使用ofType 来告诉这个集我们
+要封装的类型-->
+
+<!--而在多对一的情况中我们是在多方实体类中定义一个单方的对象属性， 然后通过resultMap进行映射-->
+<!--，使用association 来对对象属性进行映射，然后通过javaType 来告诉这个映射进行封装的类型-->
+<mapper namespace="org.lint.DAO.CityDAO" >
+    <resultMap id="tocity" type="City">
+        <id column="cid" property="cid"/>
+        <result column="cname" property="cname"/>
+        <!--这是个对象类型 ，我们使用association 来接收-->
+        <!--这时我们就用javaType指定返回到实体类的类型-->
+        <association property="province" javaType="Province" >
+            <id column="pid" property="pid"/>
+            <result column="pname" property="pname"/>
+        </association>
+    </resultMap>
+
+    <select id="seleProvincebyID" resultMap="tocity">
+        select cid,cname,pid,pname from city,province
+        where prid = pid
+        and cid = #{id}
+    </select>
+
+
+
+
+    <resultMap id="inCity" type="City">
+        <id column="cid" property="cid"/>
+        <result column="cname" property="cname"/>
+        <association property="province"
+                     javaType="Province"
+                     select="seleProvince"
+                     column="prid">
+        </association>
+    </resultMap>
+
+    <select id="seleProvince" resultType="Province">
+        select pid , pname from province where pid = #{aaa}
+    </select>
+
+    <select id="seleProvincebyID2" resultMap="inCity">
+         select cid,cname,prid from city
+        where  cid = #{id}
+    </select>
+</mapper>

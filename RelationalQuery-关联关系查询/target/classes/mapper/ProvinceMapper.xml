@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.lint.DAO.ProvinceDAO" >
+
+    <!--一对多 多表连接查询方式-->
+    <resultMap id="provinces" type="Province">
+        <!-- property 设置关联属性名 -->
+        <id column="pid" property="pid"/>
+        <result column="pname" property="pname"/>
+        <!-- ofType 设置这个集合要封装的类型，也是这个集合的泛型  -->
+        <!-- 在实体类中记得要进行关联属性 -->
+        <!--//   关联属性-->
+        <!--private Set<City> citys;-->
+        <collection property="citys" ofType="City">
+            <id column="cid" property="cid"/>
+            <result column="cname" property="cname"/>
+        </collection>
+    </resultMap>
+    <!-- 这个查询出来的东西按照province 进行封装 -->
+    <select id="seleProvincebyID" resultMap="provinces">
+        select cid,cname,pid,pname from city ,province
+        where pid = prid
+        and pid = #{xx}
+    </select>
+
+    <!--一对多 多表单独查询-->
+    <select id="seleCityByProvince" resultType="City">
+          select cid ,cname from city where prid = #{pid}
+    </select>
+    <resultMap id="province" type="Province">
+        <id column="pid" property="pid"/>
+        <result column="pname" property="pname"/>
+        <!--这个集合是通过seleCityByProvince这个查询语句得到的，而这个查询需要一个动态参数
+            这个动态参数是通过column的值传输过去的，
+            而这个column是从seleProvincebyID2中查询出来的
+         -->
+        <collection property="citys"
+                    ofType="City"
+                    select="seleCityByProvince"
+                    column="pid"
+        />
+     </resultMap>
+    <select id="seleProvincebyID2" resultMap="province" >
+        select pid ,pname from province where pid = #{pid}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.lint.DAO.StuDAO">
+    <!--
+     #{xxx}
+     那xxx可以是什么呢？
+     1，对象属性
+     2，占位符
+     3，map的key
+    -->
+
+    <select id="seleStu" resultType="org.lint.Entity.Student">
+        select id,name,age,sroce from student where name = #{name} and age > #{stu.age}
+    </select>
+
+    <select id="seleCond" resultType="org.lint.Entity.Student">
+         select id,name,age,sroce from student where name = #{param1} and age > #{param2}
+    </select>
+</mapper>

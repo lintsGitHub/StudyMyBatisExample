@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    实现Mapper动态代理的两个前提
+    1, mapper 的 namespace 要和接口的全名相同  org.lint.DAO.StuDAO
+    2, 要保证映射文件中的SQL语句的id 与 接口的方法名相同
+-->
+<mapper namespace="org.lint.DAO.StuDAO">
+    <insert id="insertStu" parameterType="Student">
+        insert into student (name , age , sroce) values (#{name},#{age},#{sroce})
+    </insert>
+</mapper>
