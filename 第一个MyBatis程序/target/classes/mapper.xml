@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 为什么要加namespace,加了它有什么用？ -->
+<!--快速定位，防止冲突-->
+
+<mapper namespace="org.lint.DAO.IStudentDAO" >
+    <!-- 增 -->
+    <insert id="insertStu"  parameterType="Student">
+--         通过id反射来进行  parameterType 设置参数类型
+        insert into student (name,age,sroce) values (#{name},#{age},#{sroce})
+    </insert>
+    <!-- 查 -->
+    <select id="stulist" resultType="org.lint.beans.Student">
+--         通过对象的属性来进行赋值
+        select name , age , sroce from student where name = #{stuName}
+
+        /*
+          模糊查询的三种写法
+            1,select name , age , sroce from student where name like  '%' #{stuName} '%'  我们一般使用的是这个
+            2,select name , age , sroce from student where name like concat('%' , #{stuName} , '%' )
+            3,select name , age , sroce from student where name = '%'%{value}'%'  如果是这种参数必须是写value ,只是作为了解不建议使用
+        */
+
+    </select>
+
+    <select id="selestus" resultType="org.lint.beans.Student">
+
+    </select>
+    <!-- 删 -->
+    <delete id="deleStu">
+        delete from  student when id = #{id}    -- 这里的#{id} 仅仅是一个占位符而已
+    </delete>
+
+</mapper>
